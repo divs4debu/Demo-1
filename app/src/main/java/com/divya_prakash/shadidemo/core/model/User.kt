@@ -4,7 +4,7 @@ data class User(val userId: String,
                 val name: String,
                 val email: String,
                 val gender: Gender,
-                val state: State
+                var state: State
                 )
 
 enum class Gender {
