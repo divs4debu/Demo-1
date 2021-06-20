@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface IUserRepository {
-    fun getUsers(): Flow<List<User>>
-    fun accept(user: User)
-    fun reject(user: User)
+    suspend fun getUsers(): Flow<List<User>>
+    suspend fun accept(user: User): Flow<Boolean>
+    suspend fun reject(user: User): Flow<Boolean>
 }

@@ -4,6 +4,7 @@ import com.divya_prakash.shadidemo.core.model.User
 
 interface IDatabaseDataProvider {
     suspend fun getUser(): List<User>
-    fun accept(user: User)
-    fun reject(user: User)
+    suspend fun accept(user: User): Boolean
+    suspend fun reject(user: User): Boolean
+    suspend fun updateData(users: List<User>)
 }

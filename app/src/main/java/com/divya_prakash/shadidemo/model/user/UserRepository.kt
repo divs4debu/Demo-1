@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class UserRepository(private val networkDataProvider: INetworkDataProvider, private val databaseDataProvider: IDatabaseDataProvider): IUserRepository {
 
     private val scope = CoroutineScope(Dispatchers.IO)
-    override fun getUsers(): Flow<List<User>> = flow {
+    override suspend fun getUsers(): Flow<List<User>> = flow {
         val databaseUsers = databaseDataProvider.getUser()
         emit(databaseUsers)
         delay(5000)
@@ -22,11 +22,13 @@ class UserRepository(private val networkDataProvider: INetworkDataProvider, priv
         emit(networkUsers)
     }.flowOn(Dispatchers.IO)
 
-    override fun accept(user: User) {
-        scope.launch { databaseDataProvider.accept(user) }
+    override suspend fun accept(user: User): Flow<Boolean> = flow {
+        val success = databaseDataProvider.accept(user)
+        emit(success)
     }
 
-    override fun reject(user: User) {
-        scope.launch { databaseDataProvider.reject(user) }
+    override suspend fun reject(user: User): Flow<Boolean> = flow {
+        val success  = databaseDataProvider.reject(user)
+        emit(success)
     }
 }
